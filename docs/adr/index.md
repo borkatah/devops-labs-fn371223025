@@ -5,3 +5,4 @@ Each decision is a separate file `NNNN-short-title.md`, numbered in order. / В�
 | # | Decision / Решение | Status / Статус |
 |---|---|---|
 | 0001 | [Record architecture decisions](0001-record-architecture-decisions.md) | Accepted |
+| 0002 | [Where the service runs](0002-where-the-service-runs.md) | Accepted |
