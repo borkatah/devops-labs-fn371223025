@@ -27,3 +27,16 @@ ruff check .
 1. Is the process alive? `curl -s http://127.0.0.1:8000/health`
 2. Can it reach its storage? `curl -s http://127.0.0.1:8000/ready` (503 means PostgreSQL is unreachable: check `echo $DATABASE_URL`)
 3. What does the log say? Read the uvicorn output in the terminal (in a container: `docker logs <container>`).
+
+## Run with Docker / Стартиране с Docker
+
+~~~bash
+docker build -t notes-api:0.3.0 .
+docker run -d --name notes-api -p 8000:8000 notes-api:0.3.0
+curl -s http://127.0.0.1:8000/health
+docker inspect --format '{{.State.Health.Status}}' notes-api
+docker logs -f notes-api
+docker stop notes-api && docker rm notes-api
+~~~
+
+`healthy` after about 10 seconds means the HEALTHCHECK passed. `docker logs -f` follows the log; Ctrl+C stops following, not the container.
