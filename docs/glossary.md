@@ -4,9 +4,14 @@
 
 | Term / Термин | Meaning / Значение |
 |---|---|
+| Artifact | A file produced by a build (package, image, binary) that is stored and deployed. / Файл, получен при изграждане (пакет, образ, изпълним файл), който се пази и внедрява. |
 | CI | Continuous integration: every change is built and tested automatically. / Всяка промяна се изгражда и тества автоматично. |
+| Container | A running, isolated process with its own file system, started from an image. / Работещ изолиран процес със собствена файлова система, стартиран от образ. |
 | Deployment | Putting a version of the service where users can reach it. / Поставяне на версия на услугата там, където потребителите я достигат. |
 | Health check | An endpoint that says whether the service is alive. / Адрес, който казва дали услугата е жива. |
 | Issue | A task, bug or idea tracked on GitHub. / Задача, бъг или идея, проследявани в GitHub. |
+| Pipeline | An automated sequence of steps (build, test, deploy) that runs on every change. / Автоматична поредица от стъпки (изграждане, тестове, внедряване) при всяка промяна. |
 | Pull request | A proposal to merge one branch into another, with review. / Предложение един клон да се слее в друг, с ревю. |
+| Rollback | Going back to the previous working version of the service. / Връщане към предишната работеща версия на услугата. |
+| Tag | A fixed name for one commit, e.g. v0.2.0. / Постоянно име на един къмит, напр. v0.2.0. |
 | Version | A named state of the service, e.g. 0.2.0. / Именувано състояние на услугата, напр. 0.2.0. |
