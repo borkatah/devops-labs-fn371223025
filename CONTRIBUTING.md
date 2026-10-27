@@ -18,4 +18,4 @@
 - Check the diff in Files changed before merging; then **Squash and merge** and delete the branch.
 - Conflicts are resolved locally in the terminal; `main` is never force-pushed.
 
-Branching strategy: GitHub Flow. Short-lived branches from `main`, one reviewed PR each, `main` always releasable; simple enough for a two-person team.
+Branching strategy: GitHub Flow (agreed). Short-lived branches from `main`, every change through a reviewed PR, `main` always releasable.
