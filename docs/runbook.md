@@ -10,7 +10,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 ## Check that it works / Проверка, че работи
 
 ~~~bash
-curl -s http://127.0.0.1:8000/health
+curl -fsS http://127.0.0.1:8000/health
 ~~~
 
 You should see `{"status":"ok"}`. The API docs are at http://127.0.0.1:8000/docs.
