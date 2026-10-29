@@ -40,3 +40,17 @@ docker stop notes-api && docker rm notes-api
 ~~~
 
 `healthy` after about 10 seconds means the HEALTHCHECK passed. `docker logs -f` follows the log; Ctrl+C stops following, not the container.
+
+## Run with Compose / Стартиране с Compose
+
+~~~bash
+cp .env.example .env            # then set a real password in .env
+docker compose up -d --build    # app + PostgreSQL; the app waits until db is healthy
+docker compose ps               # db should be (healthy)
+docker compose logs -f app      # Ctrl+C stops following, not the app
+docker compose down             # stops and removes the containers, keeps the data
+docker compose down -v          # also deletes the pgdata volume = all notes
+docker compose --profile tools up -d   # adds Adminer on port 8081
+~~~
+
+`down` keeps the named volume, so notes survive a restart. `down -v` removes it, and the next `up` starts with an empty database.
