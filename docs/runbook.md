@@ -54,3 +54,12 @@ docker compose --profile tools up -d   # adds Adminer on port 8081
 ~~~
 
 `down` keeps the named volume, so notes survive a restart. `down -v` removes it, and the next `up` starts with an empty database.
+
+## Release and rollback / Издаване и връщане назад
+
+~~~bash
+docker compose -f compose.prod.yaml pull && docker compose -f compose.prod.yaml up -d   # latest from main
+git tag v0.6.0 && git push origin v0.6.0                                               # CI pushes :v0.6.0
+APP_TAG=v0.6.0 docker compose -f compose.prod.yaml up -d                               # an exact version
+APP_TAG=<sha of a known good commit> docker compose -f compose.prod.yaml up -d         # rollback
+~~~
