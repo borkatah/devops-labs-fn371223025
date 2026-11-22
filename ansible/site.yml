@@ -64,7 +64,8 @@
   handlers:
     - name: Restart PostgreSQL
       ansible.builtin.service:
-        name: postgresql
+        # the cluster unit itself: restarting postgresql.service does not restart it if that was never started
+        name: postgresql@17-main
         state: restarted
 
 - name: Web servers
