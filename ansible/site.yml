@@ -1,0 +1,16 @@
+# Lab 7: four empty Debian servers -> Notes API behind nginx.
+# Run from this folder: ansible-playbook site.yml
+
+- name: Base for every server
+  hosts: all
+  become: true
+  tasks:
+    - name: Base packages
+      ansible.builtin.apt:
+        name:
+          - curl
+          - ca-certificates
+          - acl
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
