@@ -114,3 +114,31 @@
         name: notes
         state: restarted
         daemon_reload: true
+
+- name: Load balancer
+  hosts: lb
+  become: true
+  tasks:
+    - name: nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+
+    - name: nginx config with the web servers from the inventory
+      ansible.builtin.template:
+        src: templates/nginx-default.j2
+        dest: /etc/nginx/sites-available/default
+        mode: "0644"
+      notify: Reload nginx
+
+    - name: nginx is running
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Reload nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
