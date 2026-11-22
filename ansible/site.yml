@@ -14,3 +14,55 @@
         state: present
         update_cache: true
         cache_valid_time: 3600
+
+- name: Database
+  hosts: db
+  become: true
+  vars:
+    db_name: notes
+    db_user: notes
+    db_password: notes-lab7
+  tasks:
+    - name: PostgreSQL and the driver Ansible uses to talk to it
+      ansible.builtin.apt:
+        name:
+          - postgresql
+          - python3-psycopg2
+        state: present
+
+    # the server image has /usr/sbin/policy-rc.d, so apt installs postgresql without starting it
+    - name: PostgreSQL is running
+      ansible.builtin.service:
+        name: postgresql@17-main
+        state: started
+
+    - name: Listen on all addresses, not only localhost
+      ansible.builtin.lineinfile:
+        path: /etc/postgresql/17/main/postgresql.conf
+        regexp: "^#?listen_addresses"
+        line: "listen_addresses = '*'"
+      notify: Restart PostgreSQL
+
+    - name: Allow password logins from the other servers
+      ansible.builtin.lineinfile:
+        path: /etc/postgresql/17/main/pg_hba.conf
+        line: "host all all 0.0.0.0/0 scram-sha-256"
+      notify: Restart PostgreSQL
+
+    - name: Database user
+      community.postgresql.postgresql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+      become_user: postgres
+
+    - name: Database owned by that user
+      community.postgresql.postgresql_db:
+        name: "{{ db_name }}"
+        owner: "{{ db_user }}"
+      become_user: postgres
+
+  handlers:
+    - name: Restart PostgreSQL
+      ansible.builtin.service:
+        name: postgresql
+        state: restarted
