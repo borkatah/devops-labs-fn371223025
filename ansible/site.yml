@@ -66,3 +66,51 @@
       ansible.builtin.service:
         name: postgresql
         state: restarted
+
+- name: Web servers
+  hosts: web
+  become: true
+  vars:
+    database_url: postgresql://notes:notes-lab7@db:5432/notes
+  tasks:
+    - name: Packages the app and the pip module need
+      ansible.builtin.apt:
+        name:
+          - python3-venv
+          - python3-packaging
+          - git
+        state: present
+
+    - name: The code from our repository
+      ansible.builtin.git:
+        repo: https://github.com/borkatah/devops-labs-fn371223025.git
+        dest: /opt/notes
+        version: main
+      notify: Restart notes
+
+    - name: Python dependencies in a virtualenv
+      ansible.builtin.pip:
+        requirements: /opt/notes/requirements.txt
+        virtualenv: /opt/notes/.venv
+        virtualenv_command: python3 -m venv
+
+    - name: systemd service
+      ansible.builtin.template:
+        src: templates/notes.service.j2
+        dest: /etc/systemd/system/notes.service
+        mode: "0644"
+      notify: Restart notes
+
+    - name: notes is running and starts on boot
+      ansible.builtin.systemd:
+        name: notes
+        state: started
+        enabled: true
+        daemon_reload: true
+
+  handlers:
+    - name: Restart notes
+      ansible.builtin.systemd:
+        name: notes
+        state: restarted
+        daemon_reload: true
